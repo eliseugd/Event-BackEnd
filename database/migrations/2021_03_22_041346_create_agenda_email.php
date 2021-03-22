@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateAgendaEmail extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('agenda_email', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->smallInteger('id_event');
+            $table->string('assunto');
+            $table->string('message');
+
+            // $table->foreign('id_event')
+            // ->references('id')
+            // ->on('event');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('agenda_email');
+    }
+}
