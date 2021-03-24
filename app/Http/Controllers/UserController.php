@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Repositories\PasswordRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
@@ -14,12 +16,13 @@ class UserController extends Controller
     }
         
     public function show(User $user){
-        $users = User::fill($user);
+        $users = User::find($user);
         return response()->json($users);
     }
 
     public function store(){
         try {
+            DB::beginTransaction();
             $password_rep = new PasswordRepository();
 
             $password = $password_rep->hash(request('password'));
@@ -32,12 +35,21 @@ class UserController extends Controller
                 'birth_date' => request('birth_date'),
                 'password' => $password,
             ];
-    
-            $retorno['data'] = User::create($data);
+
+            User::create($data);
+            // $retorno['data'] = ;
             $retorno['error'] = 0;
+
+            DB::commit();
+        } catch (QueryException $e) {
+            $retorno['error'] = 1;
+            $retorno['message'] = $e->getMessage();
+
+            DB::rollback();
         } catch (Exception $e) {
             $retorno['error'] = 1;
             $retorno['message'] = $e->getMessage();
+            DB::rollback();
         }
 
         return response()->json($retorno);

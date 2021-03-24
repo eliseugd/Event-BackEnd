@@ -13,7 +13,7 @@ class CategoryEventController extends Controller
     }
         
     public function show(CategoryEvent $category){
-        $categories = CategoryEvent::fill($category);
+        $categories = CategoryEvent::find($category);
         return response()->json($categories);
     }
 

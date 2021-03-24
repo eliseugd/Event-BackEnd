@@ -8,12 +8,21 @@ use JWTAuth;
 
 class EventController extends Controller
 {
+    public function __contructor() {
+
+    }
+    
     public function index() {
         $events = Event::all();
         return response()->json($events);
     }
         
     public function show(Request $request){
+        
+        return response()->json($events);
+    }
+
+    public function search(Request $request){
         $events = Event::search($request);
         return response()->json($events);
     }

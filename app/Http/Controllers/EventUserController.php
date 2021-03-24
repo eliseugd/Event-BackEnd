@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Event;
@@ -22,7 +23,6 @@ class EventUserController extends Controller
         return response()->json($events);
     }
 
-
     public function store(Request $request){
         try {
             foreach($request->usersInvite as $key => $value) {
@@ -32,7 +32,7 @@ class EventUserController extends Controller
                     'participation_situation' => 'P',
                 ];
 
-                // Mail::to($value['email'])->send(new SendMailUser());
+                Mail::to($value['email'])->send(new SendMail());
         
                 UserEvent::create($data);
             }
@@ -44,6 +44,17 @@ class EventUserController extends Controller
         }
 
         return response()->json($retorno);
+    }
+
+    public function eventsAvailable() {
+        $id_user = '';
+        if(JWTAuth::getToken()) {
+            $token = JWTAuth::parseToken();
+            $id_user = $token->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub'];
+        }
+
+        $events = Event::available($id_user);
+        return response()->json($events);
     }
         
     public function edit(UserEvent $event){

@@ -13,7 +13,7 @@ class AgendaEmailController extends Controller
     }
         
     public function show(AgendaEmail $email){
-        $emails = AgendaEmail::fill($email);
+        $emails = AgendaEmail::find($email);
         return response()->json($emails);
     }
 

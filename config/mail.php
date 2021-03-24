@@ -14,11 +14,6 @@ return [
     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
-    'default' => env('MAIL_HOST', 'smtp.mailtrap.io'),
-    'default' => env('MAIL_PORT', '2525'),
-    'default' => env('MAIL_USERNAME', '26d3daa8bdacbb'),
-    'default' => env('MAIL_PASSWORD', 'a7b5267d45759f'),
-    'default' => env('MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------

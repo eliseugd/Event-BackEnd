@@ -30,15 +30,23 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('/', 'UserController@store');
     });
 
-    Route::post('/events-search', 'EventController@show');
+    Route::get('/events-available', 'EventUserController@eventsAvailable');
+
+    Route::get('/events-mail', function() {
+        // Mail::to('eliseuctga@gmail.com')->send(new App\Mail\SendMail());
+    });
+
+
 });
 
-// Auth::routes();
+Auth::routes();
 
 Route::group(['middleware' => ['cors', 'jwt.verify']], function () {
     Route::group(['prefix' => 'events'], function () {
         Route::get('/', 'EventController@index');
         Route::post('/', 'EventController@store');
+        Route::get('/show/{id}', 'EventController@show');
+        Route::post('/search', 'EventController@search');
         Route::get('/{event}/edit', 'EventController@edit');
         Route::patch('/{event}', 'EventController@update');
         Route::delete('/{event}', 'EventController@destroy');
@@ -47,6 +55,7 @@ Route::group(['middleware' => ['cors', 'jwt.verify']], function () {
     Route::group(['prefix' => 'user-event'], function () {
         Route::get('/', 'EventUserController@index');
         Route::post('/', 'EventUserController@store');
+        Route::get('/available', 'EventUserController@eventsAvailable');
         Route::post('/search', 'EventUserController@show');
         Route::get('/{event-user}/edit', 'EventUserController@edit');
         Route::patch('/{event-user}', 'EventUserController@update');
